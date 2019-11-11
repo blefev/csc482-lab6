@@ -6,10 +6,9 @@
 
 int main()
 {
-    std::cout << "Hello World!\n"; 
 
-	BigInt bi1 = BigInt("1111111");
-	BigInt bi2 = BigInt("1111111");
+	BigInt bi1 = BigInt("1");
+	BigInt bi2 = BigInt("999");
 
 	BigInt result = bi1 + bi2;
 

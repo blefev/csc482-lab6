@@ -34,7 +34,7 @@ BigInt BigInt::operator+(BigInt operand)
 	}
 
 	int carry = 0;
-	for (auto i = lhs.length()-1; i--;) {
+	for (int i = lhs.length() - 1; i >= 0; i--) {
 		// calculate sum for current positions
 		int sum = ((lhs[i] - '0') + (rhs[i] - '0') + carry);
 
@@ -45,7 +45,7 @@ BigInt BigInt::operator+(BigInt operand)
 	}
 
 	// add what's left of the longer BigInteger string
-	for (auto i = rhs.length() - 1; i >= lhs.length(); i--) {
+	for (int i = rhs.length()-1; i >= lhs.length(); i--) {
 		int sum = (rhs[i] - '0') + carry;
 		result.push_back(sum % 10 + '0');
 
@@ -55,7 +55,7 @@ BigInt BigInt::operator+(BigInt operand)
 	if (carry > 0) {
 		result.push_back(carry + '0');
 	}
-
+	reverse(result.begin(), result.end());
 	return BigInt(result);
 }
 
