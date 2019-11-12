@@ -6,11 +6,11 @@
 
 int main()
 {
-
-	BigInt bi1 = BigInt("1");
+	cout << "hi\n";
+	BigInt bi1 = BigInt("2");
 	BigInt bi2 = BigInt("999");
 
-	BigInt result = bi1 + bi2;
+	BigInt result = bi1 * bi2;
 
 	cout << "Result: " << result;
 
