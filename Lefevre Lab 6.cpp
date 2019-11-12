@@ -7,10 +7,11 @@
 int main()
 {
 	cout << "hi\n";
-	BigInt bi1 = BigInt("2");
+	BigInt bi1 = ("2");
+	return 0;
 	BigInt bi2 = BigInt("999");
 
-	BigInt result = bi1 * bi2;
+	BigInt result = bi1 + bi2;
 
 	cout << "Result: " << result;
 

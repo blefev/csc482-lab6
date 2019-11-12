@@ -15,7 +15,7 @@ MatrixMultiplication(matrixVec A, matrixVec B) {
 	for (size_t i = 0; i < A.size(); i++) {
 		// go through each column
 		for (size_t j = 0; j < B[0].size(); j++) {
-			BigInt sum = 0;
+			BigInt sum = "0";
 
 			// calculate products and sums for dot product
 			for (size_t k = 0; k < B.size(); k++) {
@@ -37,15 +37,15 @@ void printMatrix(matrixVec v) {
 	}
 }
 
-BigInt FibMatrix(BigInt x) {
-	if (x == 0) return 1;
+BigInt FibMatrix(unsigned x) {
+	if (x == 0) return "1";
 
 	// declare matrices
-	matrixVec squareMatrix(2, vector<BigInt>(2, 1)),
-		f0f1(2, vector<BigInt>(1, 1)), // base case matrix. f(0) = 1, f(1) = 1
+	matrixVec squareMatrix(2, vector<BigInt>(2, BigInt("1"))),
+		f0f1(2, vector<BigInt>(1, BigInt("1"))), // base case matrix. f(0) = 1, f(1) = 1
 		resultMatrix;
 
-	squareMatrix[0][0] = 0; // [[0,1],[1,1]] for matrix powers
+	squareMatrix[0][0] = "0"; // [[0,1],[1,1]] for matrix powers
 
 	// dot product of squareMatrix^x and base case matrix
 	resultMatrix = MatrixMultiplication(MatrixPower(squareMatrix, x), f0f1);
@@ -81,8 +81,8 @@ matrixVec MatrixPower(matrixVec matrix, int power) {
 }
 
 
-BigInt FibLoop(size_t x) {
-	BigInt a = 0, b = 1, c;
+BigInt FibLoop(unsigned x) {
+	BigInt a = "0", b = "1", c;
 
 	// iterate through from 2 to x, calculate fibonaccis
 	for (size_t i = 2; i <= x; i++) {
@@ -93,23 +93,23 @@ BigInt FibLoop(size_t x) {
 	return b;
 }
 
-BigInt FibRecur(BigInt x) {
+BigInt FibRecur(unsigned x) {
 	// base case
-	if (x < 2) return 1;
+	if (x < 2) return "1";
 
 	//otherwise recursively find answer
 	return FibRecur(x - 1) + FibRecur(x - 2);
 }
 
-BigInt FibRecurDP(size_t x) {
+BigInt FibRecurDP(unsigned x) {
 	// vector cache
-	map<BigInt, BigInt> fibsCache{ {0, 1}, {1, 1} };
+	map<unsigned, BigInt> fibsCache{ {0, "1"}, {1, "1"} };
 	return FibRecurDPWorker(x, fibsCache);
 }
 
-BigInt FibRecurDPWorker(size_t x, map<BigInt, BigInt>&fibsCache) {
+BigInt FibRecurDPWorker(unsigned x, map<unsigned, BigInt>&fibsCache) {
 	// base case
-	if (x < 2) return 1;
+	if (x < 2) return "1";
 
 	BigInt ans;
 
@@ -125,13 +125,13 @@ BigInt FibRecurDPWorker(size_t x, map<BigInt, BigInt>&fibsCache) {
 	return ans;
 }
 
-BigInt FibRecurDPTail(BigInt x) {
+BigInt FibRecurDPTail(unsigned x) {
 	return FibRecurDPTailWorker(x);
 }
 
-BigInt FibRecurDPTailWorker(BigInt x, BigInt = 1, BigInt = 1) {
+BigInt FibRecurDPTailWorker(unsigned x, BigInt a, BigInt b) {
 	if (x < 2) {
-		return 1;
+		return BigInt("1");
 	}
 	return FibRecurDPTailWorker(x - 1, b, a + b);
 }

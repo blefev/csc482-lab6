@@ -1,10 +1,13 @@
 #include "BigInt.h"
 
 
-BigInt BigInt::removeTrailingZeroes(BigInt bigint)
+string BigInt::removeLeadingZeroes(string str)
 {
-	string str = string(bigint);
 	// remove trailing zeroes up to n-2
+	if (str.length() < 2) {
+		return str;
+	}
+
 	str.erase(0, min(str.find_first_not_of('0'), str.size() - 2));
 	return str;
 }
@@ -18,13 +21,21 @@ BigInt::BigInt(string num)
 {
 	if (num.length() == 0) {
 		value = "0";
-	}
-	else {
-		value = num;
-		trim();
+	} else {
+		cout << "about to remove leading zeroes...";
+		value = removeLeadingZeroes(num);
 	}
 }
 
+BigInt::BigInt(char chars[])
+{
+	value = removeLeadingZeroes(string(chars));
+}
+
+BigInt::BigInt(const char chars[])
+{
+	value = removeLeadingZeroes(string(chars));
+}
 
 BigInt::~BigInt()
 {
@@ -32,20 +43,29 @@ BigInt::~BigInt()
 
 BigInt BigInt::trim()
 {
-	value = removeTrailingZeroes(value);
+	value = removeLeadingZeroes(value);
 	return *(this);
 }
 
-BigInt BigInt::operator=(string num)
+BigInt& BigInt::operator=(string num)
 {
-	value = removeTrailingZeroes(num);
+	value = removeLeadingZeroes(num);
 	return *(this);
 }
 
-BigInt BigInt::operator+(BigInt operand)
+BigInt& BigInt::operator=(char chars[])
 {
-	string lhs = value;
-	string rhs = string(operand);
+	value = removeLeadingZeroes(string(chars));
+	return *this;
+}
+
+BigInt& BigInt::operator=(const char chars[])
+{
+	value = removeLeadingZeroes(string(chars));
+	return *this;
+}
+
+string BigInt::Add(string lhs, string rhs) {
 	string result = "";
 
 	// perform multiplication
@@ -69,7 +89,7 @@ BigInt BigInt::operator+(BigInt operand)
 	}
 
 	// add what's left of the longer BigInteger string
-	for (int i = rhs.length()-1; i >= lhs.length(); i--) {
+	for (int i = rhs.length() - 1; i >= lhs.length(); i--) {
 		int sum = (rhs[i] - '0') + carry;
 		result.push_back(sum % 10 + '0');
 
@@ -80,7 +100,22 @@ BigInt BigInt::operator+(BigInt operand)
 		result.push_back(carry + '0');
 	}
 	reverse(result.begin(), result.end());
-	return BigInt(result);
+
+	return result;
+}
+
+BigInt BigInt::operator+(BigInt operand)
+{
+	string lhs = value;
+	string rhs = string(operand);
+
+	return Add(lhs, rhs);
+}
+
+BigInt& BigInt::operator+=(BigInt rhs)
+{
+	value = Add(value, rhs);
+	return *(this);
 }
 
 BigInt BigInt::operator*(BigInt operand)
