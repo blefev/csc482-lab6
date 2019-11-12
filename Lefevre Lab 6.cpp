@@ -19,7 +19,7 @@ long double timeFunction(string funcName, unsigned param);
 bool testAllFuncs();
 bool testFibFunc(string funcName, int X);
 void measureAllFuncs();
-void measureAndRecordFunc(string funcName, unsigned X, int nTrials = 100);
+void measureAndRecordFunc(string funcName, unsigned X, int nTrials = 1);
 
 map<string, function<BigInt(unsigned)>> namesToFuncs{
 	{"FibLoop", FibLoop},
@@ -39,11 +39,26 @@ map<string, unsigned> funcMaxXs{
 
 int main(int argc, char** argv)
 {
+	cout << "starting\n";
+	for (int i = 0; i < 100; i++) {
+		for (size_t j = 0; j < 100; j++) {
+			BigInt a = BigInt(to_string(i));
+			BigInt b = BigInt(to_string(j));
+			BigInt result = a * b;
+			cout << i <<"*"<<j<<": " << result << "\n";
+
+			if (string(result) != to_string(i * j)) {
+				cout << "FAILURE!";
+				return 1;
+			}
+		}
+	}
+
 	if (argc > 1 && string(argv[1]) == "test") {
 		return testAllFuncs();
 	}
-
-	measureAllFuncs();
+	return testAllFuncs();
+	//measureAllFuncs();
 
 	return 0;
 }

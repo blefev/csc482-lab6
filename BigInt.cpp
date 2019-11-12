@@ -69,8 +69,10 @@ string BigInt::Add(string lhs, string rhs) {
 
 	// perform multiplication
 	if (lhs.length() > rhs.length()) {
-		lhs.swap(rhs);
+		swap(lhs, rhs);
 	}
+
+	lhs.insert(lhs.begin(), rhs.length() - lhs.length(), '0');
 
 	if (lhs.length() == 0) {
 		return rhs;
@@ -119,28 +121,26 @@ BigInt& BigInt::operator+=(BigInt rhs)
 
 BigInt BigInt::operator*(BigInt operand)
 {
+	string lhs = value;
 	string rhs = string(operand);
-	if (value.length() == 0 || rhs.length() == 0) {
+	if (lhs.length() == 0 || rhs.length() == 0) {
 		return BigInt("0");
 	}
 
-	vector<int> result(value.length() + rhs.length(), 0);
+	vector<int> result(lhs.length() + rhs.length(), 0);
 
 	int index1 = 0, index2 = 0;
 
-	for (int i = value.length() - 1; i >= 0; i--) {
-
+	for (int i = lhs.length() - 1; i >= 0; i--) {
 		int carry = 0;
-
-		int num1 = value[i] - '0';
+		int num1 = lhs[i] - '0';
+		index2 = 0;
 
 		for (int j = rhs.length() - 1; j >= 0; j--) {
 			int num2 = rhs[j] - '0';
-
 			int sum = num1 * num2 + result[index1 + index2] + carry;
 			
 			carry = sum / 10;
-
 			result[index1 + index2] = sum % 10;
 
 			index2++;

@@ -82,7 +82,7 @@ matrixVec MatrixPower(matrixVec matrix, int power) {
 
 
 BigInt FibLoop(unsigned x) {
-	BigInt a = "0", b = "1", c;
+	BigInt a = "1", b = "1", c;
 
 	// iterate through from 2 to x, calculate fibonaccis
 	for (size_t i = 2; i <= x; i++) {
@@ -130,8 +130,8 @@ BigInt FibRecurDPTail(unsigned x) {
 }
 
 BigInt FibRecurDPTailWorker(unsigned x, BigInt a, BigInt b) {
-	if (x < 2) {
-		return BigInt("1");
+	if (x == 0) {
+		return a;
 	}
 	return FibRecurDPTailWorker(x - 1, b, a + b);
 }
