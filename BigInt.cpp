@@ -22,7 +22,6 @@ BigInt::BigInt(string num)
 	if (num.length() == 0) {
 		value = "0";
 	} else {
-		cout << "about to remove leading zeroes...";
 		value = removeLeadingZeroes(num);
 	}
 }

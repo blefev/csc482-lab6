@@ -3,28 +3,132 @@
 
 #include <iostream>
 #include "BigInt.h"
+#include "fibonacci_numbers.h" // first 94 fibonacci numbers
+#include "functions.h"
+#include <functional>
+#include <chrono>
+#include <string>
+#include <iostream>
+#include <map>
+#include <fstream>
+#include <bitset>
 
-int main()
+using namespace std;
+
+long double timeFunction(string funcName, unsigned param);
+bool testAllFuncs();
+bool testFibFunc(string funcName, int X);
+void measureAllFuncs();
+void measureAndRecordFunc(string funcName, unsigned X, int nTrials = 100);
+
+map<string, function<BigInt(unsigned)>> namesToFuncs{
+	{"FibLoop", FibLoop},
+	{"FibRecur", FibRecur},
+	{"FibRecurDP", FibRecurDP},
+	{"FibMatrix", FibMatrix},
+	{"FibRecurDPTail", FibRecurDPTail}
+};
+
+map<string, unsigned> funcMaxXs{
+	{"FibLoop", 92},
+	{"FibRecur", 30},
+	{"FibRecurDP", 92},
+	{"FibMatrix", 92},
+	{"FibRecurDPTail", 92}
+};
+
+int main(int argc, char** argv)
 {
-	cout << "hi\n";
-	BigInt bi1 = ("2");
-	return 0;
-	BigInt bi2 = BigInt("999");
+	if (argc > 1 && string(argv[1]) == "test") {
+		return testAllFuncs();
+	}
 
-	BigInt result = bi1 + bi2;
-
-	cout << "Result: " << result;
+	measureAllFuncs();
 
 	return 0;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+void measureAllFuncs() {
+	// iterate through each function and call measureAndRecordFunc
+	for (auto& it : namesToFuncs) {
+		string funcName = it.first; // this is the value in the namesToFuncs map
+		unsigned maxX = funcMaxXs[funcName]; // get maximum N
+		cout << "Testing " << funcName << "\n";
+		measureAndRecordFunc(funcName, maxX);
+	}
+}
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+// times function and writes results to file
+void measureAndRecordFunc(string funcName, unsigned X, int nTrials) {
+	ofstream fout("output\\" + funcName, ios::trunc);
+	fout << "N\tX\tT\n";
+	long double sum = 0;
+	long double avg = 0;
+
+	for (unsigned i = 0; i <= X; i++) {
+		cout << i << " ";
+		for (int trial = 0; trial < nTrials; trial++) {
+			long double time = timeFunction(funcName, i);
+			sum += time;
+
+			//cout << "Trial " << trial << ", time: " << time << "\n";
+			//cout << "Sum: " << sum << "\n";	
+		}
+		avg = sum / nTrials;
+		// i (n) needs to be represented as number of bits
+		bitset<64> bits(i);
+		fout << bits.count() << "\t" << i << "\t" << avg << endl;
+
+	}
+	cout << "\n";
+	fout.close();
+}
+
+bool testAllFuncs() {
+	// test each function by name
+	for (auto& it : namesToFuncs) {
+		string funcName = it.first; // map value is function name
+		uint64_t maxX = funcMaxXs[funcName]; // max X
+		if (!testFibFunc(funcName, maxX)) {
+			return false; // return if failed
+		}
+	}
+	return true;
+}
+
+bool testFibFunc(string funcName, int X) {
+	// First 94 fibonaccis (including zero)
+	// fibonacci(93) is the max uint64_t can handle
+	cout << "Testing " << funcName << "\n";
+
+	for (unsigned i = 1; i < X; i++) {
+		// grab function object from map
+		function<BigInt(unsigned)> func = namesToFuncs[funcName];
+		// call function with i and store result
+		BigInt result = func(i);
+
+		// check if it matches known fibonacci number
+		if (!(result == FIBS[i])) {
+			cout << funcName << "(" << i << "): failed\n";
+			cout << "Expected: " << FIBS[i] << ".Got : " << result << "\n";
+			return false;
+		}
+		cout << funcName << "(" << i << "): passed\n";
+	}
+	return true;
+}
+
+// time function passed in, called with param
+long double timeFunction(string funcName, unsigned param) {
+	using namespace chrono; // temporarily use namespace for ease
+	function<BigInt(unsigned)> func = namesToFuncs[funcName];
+
+	high_resolution_clock::time_point start = high_resolution_clock::now();
+	func(param); // call fibonacci function
+	high_resolution_clock::time_point end = high_resolution_clock::now();
+
+	// calculate timeTaken
+	duration<long double> timeTaken = duration_cast<duration<long double>>(end - start);
+
+	return timeTaken.count() * 1000;
+}
