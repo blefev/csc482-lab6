@@ -1,6 +1,14 @@
 #include "BigInt.h"
 
 
+BigInt BigInt::removeTrailingZeroes(BigInt bigint)
+{
+	string str = string(bigint);
+	// remove trailing zeroes up to n-2
+	str.erase(0, min(str.find_first_not_of('0'), str.size() - 2));
+	return str;
+}
+
 BigInt::BigInt()
 {
 	value = "0";
@@ -13,6 +21,7 @@ BigInt::BigInt(string num)
 	}
 	else {
 		value = num;
+		trim();
 	}
 }
 
@@ -21,9 +30,15 @@ BigInt::~BigInt()
 {
 }
 
+BigInt BigInt::trim()
+{
+	value = removeTrailingZeroes(value);
+	return *(this);
+}
+
 BigInt BigInt::operator=(string num)
 {
-	value = num;
+	value = removeTrailingZeroes(num);
 	return *(this);
 }
 
@@ -119,6 +134,31 @@ BigInt BigInt::operator*(BigInt operand)
 	}
 
 	return BigInt(stringResult);
+}
+
+bool BigInt::operator<(BigInt rhs)
+{
+	return value < string(rhs);
+}
+
+bool BigInt::operator>(BigInt rhs)
+{
+	return value > string(rhs);
+}
+
+bool BigInt::operator==(BigInt rhs)
+{
+	return value == string(rhs);
+}
+
+bool BigInt::operator>=(BigInt rhs)
+{
+	return value >= string(rhs);
+}
+
+bool BigInt::operator<=(BigInt rhs)
+{
+	return value <= string(rhs);
 }
 
 ostream& operator<<(ostream& os, const BigInt& bi)
