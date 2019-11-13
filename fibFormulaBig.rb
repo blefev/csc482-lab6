@@ -27,7 +27,7 @@ def benchmarkit()
     #calculatedFib = 0
 
 
-    FIBS.each_with_index do |fib, x|
+    10000.times do |x|
       sum = 0
 
       trials.times do
@@ -41,10 +41,10 @@ def benchmarkit()
 
       avg = sum / trials
 
-      n = x.to_s(2).chars.count("1")
+      n = x.to_s(2).length
 
-      f.puts("#{x}\t#{n}\t#{avg}\t")
-      puts("#{x},\t#{n}\t#{avg}\t")
+      f.puts("#{n}\t#{x}\t#{avg}\t")
+      puts("#{n}\t#{x}\t#{avg}\t")
     end
   end
 end
@@ -81,5 +81,5 @@ def writePowersOf2
 end
 
 ##test
-writePowersOf2
-#benchmarkit
+#writePowersOf2
+benchmarkit

@@ -1,5 +1,5 @@
 #include "BigInt.h"
-
+#include "test_numbers.h"
 
 string BigInt::removeLeadingZeroes(string str)
 {
@@ -120,6 +120,35 @@ BigInt& BigInt::operator+=(BigInt rhs)
 }
 
 bool BigInt::test() {
+	BigInt power = "2";
+	//POWERS_OF_2_64_TO_192
+	for (int j = 0; j < 192; j++) {
+
+		power = power * BigInt("2");
+
+		cout << "2^" << j << " = " << power;
+
+		if (j > 64) {
+			if (string(POWERS_OF_2_64_TO_192[j]) == string(power)) {
+				cout << " FAILURE!\n";
+				return false;
+			}
+			else {
+				cout << " PASSED\n";
+			}
+		}
+		else {
+			if (to_string(pow(2, j)) == string(power)) {
+				cout << " FAILURE!\n";
+				return false;
+			}
+			else {
+				cout << " PASSED\n";
+			}
+		}
+	}
+
+	return true;
 	cout << "Testing\n";
 	for (int i = 0; i < 100; i++) {
 		for (size_t j = 0; j < 100; j++) {
@@ -151,6 +180,11 @@ bool BigInt::test() {
 			}
 		}
 	}
+
+
+
+
+
 	return true;
 }
 

@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "BigInt.h"
-#include "fibonacci_numbers.h" // first 94 fibonacci numbers
+#include "test_numbers.h" // first 94 fibonacci numbers
 #include "functions.h"
 #include <functional>
 #include <chrono>
@@ -42,7 +42,7 @@ map<string, int> funcMaxXs{
 int main(int argc, char** argv)
 {
 	BigInt a = "";
-	//a.test();
+	a.test();
 	if (argc > 1 && string(argv[1]) == "test") {
 		return testAllFuncs();
 	}
@@ -79,9 +79,10 @@ void measureAndRecordFunc(string funcName, int X, int nTrials) {
 			//cout << "Sum: " << sum << "\n";	
 		}
 		avg = sum / nTrials;
-		// i (n) needs to be represented as number of bits
-		bitset<64> bits(i);
-		fout << bits.count() << "\t" << i << "\t" << avg << endl;
+
+		unsigned long bits = round(floor(log2(i)) + 1);
+
+		fout << bits << "\t" << i << "\t" << avg << endl;
 
 	}
 	cout << "\n";

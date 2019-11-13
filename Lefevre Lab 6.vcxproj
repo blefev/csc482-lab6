@@ -157,7 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BigInt.h" />
-    <ClInclude Include="fibonacci_numbers.h" />
+    <ClInclude Include="test_numbers.h" />
     <ClInclude Include="functions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
