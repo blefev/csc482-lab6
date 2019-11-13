@@ -17,6 +17,7 @@ public:
 	BigInt(char chars[]);
 	BigInt(const char chars[]);
 	~BigInt();
+	bool test();
 	BigInt trim();
 	BigInt& operator = (string num);
 	BigInt& operator = (char num[]);

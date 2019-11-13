@@ -37,7 +37,7 @@ void printMatrix(matrixVec v) {
 	}
 }
 
-BigInt FibMatrix(unsigned x) {
+BigInt FibMatrix(int x) {
 	if (x == 0) return "1";
 
 	// declare matrices
@@ -51,6 +51,16 @@ BigInt FibMatrix(unsigned x) {
 	resultMatrix = MatrixMultiplication(MatrixPower(squareMatrix, x), f0f1);
 
 	return resultMatrix[0][0];
+}
+
+BigInt FibFormula(int x)
+{
+	x++;
+	long double phi = (1 + sqrt(5)) / 2;
+
+	long double fib = int(round((pow(phi, x) - pow(phi, -x)) / sqrt(5)));
+	cout << "FibFormula result: " << fib << endl;
+	return BigInt(to_string(int(fib)));
 }
 
 
@@ -81,7 +91,7 @@ matrixVec MatrixPower(matrixVec matrix, int power) {
 }
 
 
-BigInt FibLoop(unsigned x) {
+BigInt FibLoop(int x) {
 	BigInt a = "1", b = "1", c;
 
 	// iterate through from 2 to x, calculate fibonaccis
@@ -93,7 +103,7 @@ BigInt FibLoop(unsigned x) {
 	return b;
 }
 
-BigInt FibRecur(unsigned x) {
+BigInt FibRecur(int x) {
 	// base case
 	if (x < 2) return "1";
 
@@ -101,13 +111,13 @@ BigInt FibRecur(unsigned x) {
 	return FibRecur(x - 1) + FibRecur(x - 2);
 }
 
-BigInt FibRecurDP(unsigned x) {
+BigInt FibRecurDP(int x) {
 	// vector cache
-	map<unsigned, BigInt> fibsCache{ {0, "1"}, {1, "1"} };
+	map<int, BigInt> fibsCache{ {0, "1"}, {1, "1"} };
 	return FibRecurDPWorker(x, fibsCache);
 }
 
-BigInt FibRecurDPWorker(unsigned x, map<unsigned, BigInt>&fibsCache) {
+BigInt FibRecurDPWorker(int x, map<int, BigInt>&fibsCache) {
 	// base case
 	if (x < 2) return "1";
 
@@ -125,11 +135,11 @@ BigInt FibRecurDPWorker(unsigned x, map<unsigned, BigInt>&fibsCache) {
 	return ans;
 }
 
-BigInt FibRecurDPTail(unsigned x) {
+BigInt FibRecurDPTail(int x) {
 	return FibRecurDPTailWorker(x);
 }
 
-BigInt FibRecurDPTailWorker(unsigned x, BigInt a, BigInt b) {
+BigInt FibRecurDPTailWorker(int x, BigInt a, BigInt b) {
 	if (x == 0) {
 		return a;
 	}

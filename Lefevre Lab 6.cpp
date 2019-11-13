@@ -15,50 +15,39 @@
 
 using namespace std;
 
-long double timeFunction(string funcName, unsigned param);
+long double timeFunction(string funcName, int param);
 bool testAllFuncs();
 bool testFibFunc(string funcName, int X);
 void measureAllFuncs();
-void measureAndRecordFunc(string funcName, unsigned X, int nTrials = 1);
+void measureAndRecordFunc(string funcName, int X, int nTrials = 1);
 
-map<string, function<BigInt(unsigned)>> namesToFuncs{
+map<string, function<BigInt(int)>> namesToFuncs{
 	{"FibLoop", FibLoop},
 	{"FibRecur", FibRecur},
 	{"FibRecurDP", FibRecurDP},
 	{"FibMatrix", FibMatrix},
-	{"FibRecurDPTail", FibRecurDPTail}
+	{"FibRecurDPTail", FibRecurDPTail},
+	{"FibFormula", FibFormula}
 };
 
-map<string, unsigned> funcMaxXs{
-	{"FibLoop", 92},
-	{"FibRecur", 30},
-	{"FibRecurDP", 92},
-	{"FibMatrix", 92},
-	{"FibRecurDPTail", 92}
+map<string, int> funcMaxXs{
+	{"FibLoop", 100},
+	{"FibRecur", 28},
+	{"FibRecurDP", 1000},
+	{"FibMatrix", 1000},
+	{"FibRecurDPTail", 92},
+	{"FibFormula", 45}
 };
 
 int main(int argc, char** argv)
 {
-	cout << "starting\n";
-	for (int i = 0; i < 100; i++) {
-		for (size_t j = 0; j < 100; j++) {
-			BigInt a = BigInt(to_string(i));
-			BigInt b = BigInt(to_string(j));
-			BigInt result = a * b;
-			cout << i <<"*"<<j<<": " << result << "\n";
-
-			if (string(result) != to_string(i * j)) {
-				cout << "FAILURE!";
-				return 1;
-			}
-		}
-	}
-
+	BigInt a = "";
+	//a.test();
 	if (argc > 1 && string(argv[1]) == "test") {
 		return testAllFuncs();
 	}
-	return testAllFuncs();
-	//measureAllFuncs();
+	//return testAllFuncs();
+	measureAllFuncs();
 
 	return 0;
 }
@@ -67,20 +56,20 @@ void measureAllFuncs() {
 	// iterate through each function and call measureAndRecordFunc
 	for (auto& it : namesToFuncs) {
 		string funcName = it.first; // this is the value in the namesToFuncs map
-		unsigned maxX = funcMaxXs[funcName]; // get maximum N
+		int maxX = funcMaxXs[funcName]; // get maximum N
 		cout << "Testing " << funcName << "\n";
 		measureAndRecordFunc(funcName, maxX);
 	}
 }
 
 // times function and writes results to file
-void measureAndRecordFunc(string funcName, unsigned X, int nTrials) {
+void measureAndRecordFunc(string funcName, int X, int nTrials) {
 	ofstream fout("output\\" + funcName, ios::trunc);
 	fout << "N\tX\tT\n";
 	long double sum = 0;
 	long double avg = 0;
 
-	for (unsigned i = 0; i <= X; i++) {
+	for (int i = 0; i <= X; i++) {
 		cout << i << " ";
 		for (int trial = 0; trial < nTrials; trial++) {
 			long double time = timeFunction(funcName, i);
@@ -116,9 +105,9 @@ bool testFibFunc(string funcName, int X) {
 	// fibonacci(93) is the max uint64_t can handle
 	cout << "Testing " << funcName << "\n";
 
-	for (unsigned i = 1; i < X; i++) {
+	for (int i = 1; i < X; i++) {
 		// grab function object from map
-		function<BigInt(unsigned)> func = namesToFuncs[funcName];
+		function<BigInt(int)> func = namesToFuncs[funcName];
 		// call function with i and store result
 		BigInt result = func(i);
 
@@ -134,9 +123,9 @@ bool testFibFunc(string funcName, int X) {
 }
 
 // time function passed in, called with param
-long double timeFunction(string funcName, unsigned param) {
+long double timeFunction(string funcName, int param) {
 	using namespace chrono; // temporarily use namespace for ease
-	function<BigInt(unsigned)> func = namesToFuncs[funcName];
+	function<BigInt(int)> func = namesToFuncs[funcName];
 
 	high_resolution_clock::time_point start = high_resolution_clock::now();
 	func(param); // call fibonacci function

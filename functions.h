@@ -6,19 +6,21 @@
 #include <vector>
 #include <array>
 #include <map>
+#include <cmath>
 #include "BigInt.h"
 #define matrixVec vector<vector<BigInt> >
 
 
 using namespace std;
 
-BigInt FibLoop(unsigned);
-BigInt FibRecur(unsigned);
-BigInt FibRecurDP(unsigned);
-BigInt FibRecurDPWorker(unsigned, map<unsigned, BigInt> &);
-BigInt FibRecurDPTail(unsigned);
-BigInt FibRecurDPTailWorker(unsigned x, BigInt = BigInt("1"), BigInt = BigInt("1"));
-BigInt FibMatrix(unsigned);
+BigInt FibLoop(int);
+BigInt FibRecur(int);
+BigInt FibRecurDP(int);
+BigInt FibRecurDPWorker(int, map<int, BigInt> &);
+BigInt FibRecurDPTail(int);
+BigInt FibRecurDPTailWorker(int x, BigInt = BigInt("1"), BigInt = BigInt("1"));
+BigInt FibMatrix(int);
+BigInt FibFormula(int);
 matrixVec MatrixPower(matrixVec, int);
 matrixVec MatrixMultiplication(matrixVec, matrixVec);
 void printMatrix(matrixVec);

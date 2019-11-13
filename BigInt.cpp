@@ -119,6 +119,41 @@ BigInt& BigInt::operator+=(BigInt rhs)
 	return *(this);
 }
 
+bool BigInt::test() {
+	cout << "Testing\n";
+	for (int i = 0; i < 100; i++) {
+		for (size_t j = 0; j < 100; j++) {
+			BigInt a = BigInt(to_string(i));
+			BigInt b = BigInt(to_string(j));
+			BigInt result = a * b;
+			cout << i << "*" << j << ": " << result;
+
+			if (string(result) != to_string(i * j)) {
+				cout << " FAILURE!\n";
+				return false;
+			} else {
+				cout << " PASSED\n";
+			}
+		}
+	}
+	for (int i = 0; i < 100; i++) {
+		for (size_t j = 0; j < 100; j++) {
+			BigInt a = BigInt(to_string(i));
+			BigInt b = BigInt(to_string(j));
+			BigInt result = a + b;
+			cout << i << "+" << j << ": " << result;
+
+			if (string(result) != to_string(i * j)) {
+				cout << " FAILURE!\n";
+				return false;
+			} else {
+				cout << " PASSED\n";
+			}
+		}
+	}
+	return true;
+}
+
 BigInt BigInt::operator*(BigInt operand)
 {
 	string lhs = value;
