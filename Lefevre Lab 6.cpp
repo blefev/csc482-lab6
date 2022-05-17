@@ -1,6 +1,3 @@
-// Lefevre Lab 6.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 #include "BigInt.h"
 #include "test_numbers.h" // first 94 fibonacci numbers
@@ -39,8 +36,7 @@ map<string, int> funcMaxXs{
 	{"FibFormula", 45}
 };
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
 	BigInt a = "";
 	a.test();
 	if (argc > 1 && string(argv[1]) == "test") {
